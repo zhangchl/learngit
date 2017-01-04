@@ -1,0 +1,87 @@
+git基本语法
+--------------------------------------------------------------------------------
+  1. git init                            ：把这个目录变成Git可以管理的仓库
+  2. git add  xxx(文件名)       ：把文件添加到仓库
+  3. git commit -m "本次提交版本说明"     ：把文件提交到版本库
+  4. git status                       ：查看仓库当前的状态
+  5. git diff  xxx(文件名)        ：查看文件变化情况
+  6. git log 或者 git log --pretty=oneline  ：查看历史提交版本库信息
+  7. HEAD：指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使
+                                                    用命令git reset --hard commit_id。
+  8. git reset --hard HEAD^ ：将版本回退到上一版本（既从3回退到2） （ 如果想
+                                                    从3回退到1命令则为：git reset --hard HEAD^^，
+                                                    其余情况依次类推，当然往上100个版本写100个^
+                                                    比较容易数不过来，所以写成HEAD~100）
+  9. git reset --hard commitId(id前几位即可)： commitId为3版本的id，则版本库
+                                                                              可从2版本重新回到3版本。
+  10. git reflog                       : 查看命令历史，以便确定要回到未来的哪个版本。
+  11. git checkout -- xxx(文件名)  ：回退文件到最近一次git commit或git add时的状
+                                                            态后。
+  12. git reset HEAD xxx(文件名)  ：可以把暂存区的修改撤销掉（unstage），重新放
+                                                            回工作区
+  13. git rm xxx(文件名)          :删除受控文件。再使用commit提交到版本库，则文件
+                                                   就在工作区被删除。
+  14. ssh-keygen -t rsa -C "邮箱"  ：创建SSH Key （邮箱：747316007@qq.com）
+  15. git remote add origin  url    ：（https协议）关联一个远程库         
+                                                     (eg.url:https://github.com/757316007/test1.git)
+  16. git remote add origin git@github.com:username/test2.git：（ssh协议）
+                                                     关联一个远程库（eg.username可以为：zhangchl）
+  17. git push -u origin master     ：第一次推送分支所有内容
+  18. git push origin master           : 非第一次推送分支内容
+  19. git clone url                           : （https协议）克隆版本库
+                                                     (eg.url:https://github.com/zhangchl/gitskills.git)
+  20. git clone git@github.com:username/gitskills.git：（ssh协议）克隆版本库
+                                                    （eg.username可以为：zhangchl）
+  21. 
+
+分支（创建自己的子分支而不影响主分支，可以在自己的子分支中任意提交）
+--------------------------------------------------------------------------------
+  1. git branch branch_name        :创建分支（分支名称（branch_name）自定义）
+  2. git checkout branch_name     :切换到”branch_name“分支
+  3. git checkout -b branchname  :创建并切换到"branch_name"分支
+  4. git branch                                :列出所有分支，当前分支前面会标一个*号
+  5. git merge branchname            :合并指定分支到当前分支
+  6. git branch -d branchname       :删除“branchname”分支
+  7. git branch -D branchanme       :强制删除未合并的分支
+  8. git log --graph --pretty=oneline --abbrev-commit：查看分支合并图
+  9. git merge --no-ff -m "merge with no-ff" branchname: 合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并
+  10. git stash                                  : 可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作
+  11. git stash list                            :显示此分支下“储藏”的工作现场。
+  12. git stash apply                        :恢复到最后“储藏”的工作现场。
+  13. git stash apply stash@{0…n}  :恢复到指定工作现场。
+  14. git stash drop                         :删除最后“储藏”的工作现场记录。
+  15. git stash pop                          :恢复并删除最后“储藏”的工作现场。
+  16. git remote                              :查看远程库信息
+  17. git remote -v                          :查看远程库详情
+  18. git checkout -b dev origin/div:创建远程origin的dev分支到本地（
+        dev 分支名称， origin 远程库名称）
+  19. git branch --set-upstream dev origin/dev:建立本地分支和远程分支的关联
+                                       origin/dev分支的链接（提示'no tracking information'执行）
+  20. git pull                                     :拉取远程库信息
+  21. 
+
+分支总计：
+  ● 并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
+  ● master分支是主分支，因此要时刻与远程同步；
+  ● dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+  ● bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
+  ● feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
+  ● 总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
+
+标签（tag就是一个让人容易记住的有意义的名字，它跟某个commit绑在一起。）
+--------------------------------------------------------------------------------
+  1. git tag                                :查看所有标签
+  2. git tag <tagname>                      :在当前提交处添加标签或者可以说分割线
+  3. git tag <tagname> -m "说明"      :创建标签并指定标签内容
+  4. git tag -a <tagname> -m "说明" commit_id    :给已提交的commit补标签
+  5. git show <tagname>                   :显示标签详情
+  6. git tag -d <tagname>                  :删除定义错误的标签
+  7. git push origin <tagname>         :将本地标签推送到远程服务器
+  8. git push origin --tags                   :将本地全部标签推送到远程服务器
+  9. git push origin :refs/tags/<name>:删除已推送远程服务器标签，前提现在本地删除
+  10. 11
+
+
+总结
+  ● add 将【工作区】文件放到版本库中的【stage(暂存区)】，commit将暂存区中的修改提交到当前【master(分支)】
+  ● 因为Git跟踪并管理的是修改，而非文件
